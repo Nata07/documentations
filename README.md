@@ -7,7 +7,7 @@
   <span> no arquivo criado, o <b>up</b> é a para definir os campos da tabela no banco.
     <span> no metodo <b> down </b> usado para drop da tabela.
 
-#Execute migrations
+# Execute migrations
 Executar
 <p>yarn sequelize db:migrate</p>
 <h2>Desfazer a ultima </h2>
@@ -15,10 +15,9 @@ Executar
 <h2>Desfazer todas as migrations </h2>
 <p>yarn sequelize db:migrate:undo:all</p>
 
-<h2> Exemple model </h2>
-[code]
+# Exemple model 
+```
 import Sequelize, { Model } from 'sequelize';
-
 class User extends Model {
   static init(sequelize) {
     super.init(
@@ -36,4 +35,5 @@ class User extends Model {
 }
 
 export default User;
-[code]
+
+```
