@@ -40,27 +40,39 @@ export default User;
 
 # Exemple Controller 
 ```
-import User from '../models/User';
+import Sequelize, { Model } from 'sequelize';
+import bcrypt from 'bcryptjs';
 
-class UserController {
-  async store(req, res) {
-    const userExist = await User.findOne({ where: { email: req.body.email } });
+class User extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        name: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password: Sequelize.VIRTUAL,
+        password_hash: Sequelize.STRING,
+        provider: Sequelize.STRING,
+      },
+      {
+        sequelize,
+      }
+    );
 
-    if (userExist) {
-      return res.status(400).json({ message: 'User already exists.' });
-    }
-    const { id, name, email, provider } = await User.create(req.body);
-
-    return res.json({
-      id,
-      name,
-      email,
-      provider,
+    // executa sempre antes de salvar
+    this.addHook('beforeSave', async user => {
+      if (user.password) {
+        user.password_hash = await bcrypt.hash(user.password, 8);
+      }
     });
+
+    return this;
   }
 }
 
-export default new UserController();
+export default User;
+
 
 ```
+
+
 
